@@ -9,29 +9,19 @@ const API_PORT = 3001;
 const app = express();
 app.use(cors());
 const router = express.Router();
-
-// this is our MongoDB database
 const dbRoute =
   "mongodb+srv://Artem:v00061490@cluster0-wsydf.mongodb.net/test?retryWrites=true&w=majority";
-
-// connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 
 db.once("open", () => console.log("connected to the database"));
-
-// checks if connection with the database is successful
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-// (optional) only made for logging and
-// bodyParser, parses the request body to be a readable json format
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 
-// this is our get method
-// this method fetches all available data in our database
 router.get("/watched", (req, res) => {
   Data.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
@@ -39,31 +29,23 @@ router.get("/watched", (req, res) => {
   });
 });
 
-// this is our delete method
-// this method removes existing data in our database
 router.delete("/watched", (req, res) => {
   const { id } = req.body;
-  console.log(req.body);
   Data.findByIdAndRemove(id, err => {
     if (err) return res.send(err);
     return res.json({ id: id });
   });
 });
 
-// this is our create method
-// this method adds new data in our database
 router.post("/watched", (req, res) => {
   let data = new Data();
-
   const { id, title, thumb } = req.body;
-
   if ((!id && id !== 0) || !title || !thumb) {
     return res.json({
       success: false,
       error: "INVALID INPUTS"
     });
   }
-
   data.title = title;
   data.id = id;
   data.thumb = thumb;
@@ -73,8 +55,5 @@ router.post("/watched", (req, res) => {
   });
 });
 
-// append /api for our http requests
 app.use("/api", router);
-
-// launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));

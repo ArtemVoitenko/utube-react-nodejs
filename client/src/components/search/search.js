@@ -23,14 +23,6 @@ class Search extends Component {
     const { query } = this.state;
     return (
       <div className="search">
-        {/* <input
-          type="text"
-          className="search__input"
-          onChange={this.onSearchInput}
-          onFocus={this.onSearchInput}
-          value={query}
-          placeholder="Type search query"
-        /> */}
         <DebounceInput
           className="search__input"
           onChange={this.onSearchInput}

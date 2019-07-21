@@ -1,6 +1,6 @@
 import React from "react";
 import "./search-results-item.scss";
-const SearchResultsItem = ({ id, title, thumb, votes, playVideo }) => {
+const SearchResultsItem = ({ id, title, thumb, playVideo }) => {
   return (
     <div className="search-item">
       <img src={thumb} alt={title} className="search-item__thumb" />
